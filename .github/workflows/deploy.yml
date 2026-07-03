@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: welcome_test1
+    runs-on:
 
     steps:
       - name: Check out repository

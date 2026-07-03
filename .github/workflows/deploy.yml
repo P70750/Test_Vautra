@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on:
+    runs-on: Test_vautra
 
     steps:
       - name: Check out repository

@@ -8,7 +8,7 @@ permissions:
 
 jobs:
   deploy:
-    runs-on: self-hosted
+    runs-on: Test_vautra
 
     steps:
       - name: Login to GHCR

@@ -12,10 +12,16 @@ jobs:
     runs-on: Test_vautra
 
     steps:
-      - name: Login to GHCR
+      - name: Verify Runner
         run: |
-          echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io \
-            -u P70750 \
+          echo "Hostname: $(hostname)"
+          echo "Current User: $(whoami)"
+          echo "Working Directory: $(pwd)"
+
+      - name: Login to GitHub Container Registry
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io \
+            -u "${{ github.actor }}" \
             --password-stdin
 
       - name: Pull Latest Image
@@ -30,6 +36,10 @@ jobs:
         run: |
           docker rm test_vautra || true
 
+      - name: Remove Old Image (Optional)
+        run: |
+          docker image prune -f
+
       - name: Run Container
         run: |
           docker run -d \
@@ -37,3 +47,14 @@ jobs:
             -p 8090:80 \
             --restart always \
             ghcr.io/p70750/test_vautra:latest
+
+      - name: Verify Deployment
+        run: |
+          echo "========== Docker Images =========="
+          docker images
+
+          echo "========== Docker Containers =========="
+          docker ps -a
+
+          echo "========== Running Containers =========="
+          docker ps

@@ -33,6 +33,6 @@ jobs:
         run: |
           docker run -d \
             --name test_vautra \
-            -p 80:80 \
+            -p 8090:80 \
             --restart always \
             ghcr.io/p70750/test_vautra:latest

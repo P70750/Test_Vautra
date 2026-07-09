@@ -10,8 +10,11 @@ permissions:
   packages: write
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: Test_vautra
+
+    outputs:
+      image_name: ${{ steps.image.outputs.image_name }}
 
     steps:
       - name: Checkout Code
@@ -20,16 +23,13 @@ jobs:
           fetch-depth: 1
 
       - name: Set Image Name
+        id: image
         run: |
-          echo "IMAGE_NAME=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+          IMAGE_NAME=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+          echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
+          echo "image_name=$IMAGE_NAME" >> $GITHUB_OUTPUT
 
-      - name: Verify Runner
-        run: |
-          echo "Hostname: $(hostname)"
-          echo "User: $(whoami)"
-          echo "Working Directory: $(pwd)"
-
-      - name: Login to GitHub Container Registry
+      - name: Login to GHCR
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -44,9 +44,28 @@ jobs:
         run: |
           docker push ghcr.io/${IMAGE_NAME}:latest
 
+  deploy:
+    needs: build
+
+    strategy:
+      matrix:
+        runner:
+          - Test_vautra
+          - server2
+
+    runs-on: ${{ matrix.runner }}
+
+    steps:
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Pull Latest Image
         run: |
-          docker pull ghcr.io/${IMAGE_NAME}:latest
+          docker pull ghcr.io/${{ needs.build.outputs.image_name }}:latest
 
       - name: Stop Existing Container
         run: |
@@ -66,15 +85,8 @@ jobs:
             --name test_vautra \
             -p 8090:80 \
             --restart always \
-            ghcr.io/${IMAGE_NAME}:latest
+            ghcr.io/${{ needs.build.outputs.image_name }}:latest
 
       - name: Verify Deployment
         run: |
-          echo "========== Docker Images =========="
-          docker images
-
-          echo "========== Docker Containers =========="
           docker ps -a
-
-          echo "========== Running Containers =========="
-          docker ps

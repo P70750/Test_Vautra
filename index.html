@@ -1,10 +1,145 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Welcome</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome | Vautra Application</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Poppins',sans-serif;
+        }
+
+        body{
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+            background:linear-gradient(-45deg,#4facfe,#00f2fe,#667eea,#764ba2,#ff6a88);
+            background-size:400% 400%;
+            animation:gradient 12s ease infinite;
+            overflow:hidden;
+        }
+
+        @keyframes gradient{
+            0%{background-position:0% 50%;}
+            50%{background-position:100% 50%;}
+            100%{background-position:0% 50%;}
+        }
+
+        .card{
+            width:700px;
+            max-width:90%;
+            text-align:center;
+            padding:60px 40px;
+            border-radius:25px;
+            background:rgba(255,255,255,0.15);
+            backdrop-filter:blur(18px);
+            -webkit-backdrop-filter:blur(18px);
+            border:1px solid rgba(255,255,255,0.3);
+            box-shadow:0 15px 40px rgba(0,0,0,0.25);
+            animation:fadeIn 1.2s ease;
+        }
+
+        @keyframes fadeIn{
+            from{
+                opacity:0;
+                transform:translateY(30px);
+            }
+            to{
+                opacity:1;
+                transform:translateY(0);
+            }
+        }
+
+        h1{
+            font-size:3.2rem;
+            color:#fff;
+            font-weight:700;
+            margin-bottom:20px;
+            text-shadow:2px 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .highlight{
+            color:#ffe66d;
+        }
+
+        p{
+            color:#f5f5f5;
+            font-size:1.2rem;
+            line-height:1.8;
+            margin-bottom:35px;
+        }
+
+        .btn{
+            display:inline-block;
+            text-decoration:none;
+            color:white;
+            background:linear-gradient(90deg,#ff512f,#dd2476);
+            padding:16px 38px;
+            border-radius:50px;
+            font-size:18px;
+            font-weight:600;
+            transition:0.3s;
+            box-shadow:0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .btn:hover{
+            transform:translateY(-5px) scale(1.05);
+            box-shadow:0 12px 25px rgba(0,0,0,0.35);
+        }
+
+        .footer{
+            margin-top:35px;
+            color:white;
+            opacity:0.85;
+            font-size:14px;
+            letter-spacing:1px;
+        }
+
+        @media(max-width:768px){
+            h1{
+                font-size:2.2rem;
+            }
+
+            p{
+                font-size:1rem;
+            }
+
+            .card{
+                padding:40px 25px;
+            }
+        }
+
+    </style>
+
 </head>
 <body>
-    <h1>Welcome to Pavan</h1>
-    <p>Deployed using GitHub Actions</p>
+
+    <div class="card">
+
+        <h1>🎉 Welcome to <span class="highlight">Vautra Application</span></h1>
+
+        <p>
+            Your deployment has been completed successfully.
+            <br>
+            Thank you for choosing <strong>Vautra</strong>.
+            <br>
+            Experience a secure, reliable, and modern platform built for excellence.
+        </p>
+
+        <a href="#" class="btn">🚀 Deployment Successful</a>
+
+        <div class="footer">
+            © 2026 Vautra Application | Production Environment
+        </div>
+
+    </div>
+
 </body>
 </html>
